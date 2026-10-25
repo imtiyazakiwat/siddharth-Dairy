@@ -42,22 +42,17 @@ class _CalculationPageState extends State<CalculationPage> {
       appBar: AppBar(
         title: Text('Milk Amount Calculation'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: dataList.length + 1, // +1 for the total row
-              itemBuilder: (context, index) {
-                if (index == dataList.length) {
-                  return _buildTotalRow();
-                } else {
-                  return _buildRow(index);
-                }
-              },
-            ),
-          ),
-          _buildAddRowButton(),
-        ],
+      body: ListView.builder(
+        itemCount: dataList.length + 2, // +1 for the total row, +1 for the add button
+        itemBuilder: (context, index) {
+          if (index < dataList.length) {
+            return _buildRow(index);
+          } else if (index == dataList.length) {
+            return _buildTotalRow();
+          } else {
+            return _buildAddRowButton();
+          }
+        },
       ),
     );
   }
@@ -157,9 +152,15 @@ class _CalculationPageState extends State<CalculationPage> {
   }
 
   Widget _buildAddRowButton() {
-    return ElevatedButton(
-      onPressed: _addRow,
-      child: Icon(Icons.add),
+    // Centered just below the Total row; Center keeps the ListView from stretching it.
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: Center(
+        child: ElevatedButton(
+          onPressed: _addRow,
+          child: Icon(Icons.add),
+        ),
+      ),
     );
   }
 
